@@ -1,0 +1,26 @@
+{
+    "require": {
+        "php": ">=7.0",
+        "ext-redis": "*",
+        "slim/slim": "^3.0",
+        "monolog/monolog": "^1.23",
+        "doctrine/orm": "^2",
+        "gedmo/doctrine-extensions": "^2",
+        "doctrine/migrations": "^1.5",
+        "bshaffer/oauth2-server-php": "^1.10",
+        "symfony/validator": "^3.4",
+        "symfony/routing": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\Base\\": "src",
+            "App\\Modules\\": "modules",
+            "Entities\\": "storage/Entities",
+            "Repositories\\": "storage/Repositories",
+            "Proxies\\": "storage/Proxies"
+        },
+        "psr-0": {
+            "Symfony\\Component\\Validator\\": ""
+        }
+    }
+}
