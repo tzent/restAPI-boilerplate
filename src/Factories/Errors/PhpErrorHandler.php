@@ -26,10 +26,12 @@ class PhpErrorHandler implements IErrorHandler
                 ? 500
                 : $exception->getCode();
 
-            $container->get('logger')->error(sprintf('[%d] %s %s', $code, $exception->getMessage(), $exception->getTraceAsString()), [
-                'request' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
-                'params'  => file_get_contents('php://input')
-            ]);
+            if (!in_array($exception->getCode(), [401, 403])) {
+                $container->get('logger')->error(sprintf('[%d] %s %s', $code, $exception->getMessage(), $exception->getTraceAsString()), [
+                    'request' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
+                    'params'  => file_get_contents('php://input')
+                ]);
+            }
 
             return $response->withStatus($code);
         };

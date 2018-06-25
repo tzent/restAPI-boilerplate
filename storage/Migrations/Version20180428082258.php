@@ -17,7 +17,7 @@ class Version20180428082258 extends AbstractMigration
      */
     public function getDescription()
     {
-        return 'Create table oauth_users if not exists';
+        return 'Create table users if not exists';
     }
 
     /**
@@ -44,6 +44,6 @@ class Version20180428082258 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $this->addSql('DROP TABLE IF EXISTS oauth_users');
+        $this->addSql('DROP TABLE IF EXISTS users');
     }
 }

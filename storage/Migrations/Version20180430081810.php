@@ -17,7 +17,7 @@ class Version20180430081810 extends AbstractMigration
      */
     public function getDescription()
     {
-        return 'Create table oauth_authorization_codes if not exists';
+        return 'Create table authorization_codes if not exists';
     }
 
     /**
@@ -57,6 +57,6 @@ class Version20180430081810 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $this->addSql('DROP TABLE IF EXISTS oauth_authorization_codes');
+        $this->addSql('DROP TABLE IF EXISTS authorization_codes');
     }
 }

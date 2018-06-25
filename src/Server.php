@@ -12,6 +12,7 @@ namespace App\Base;
 
 use App\Base\Middlewares\Benchmark;
 use App\Base\Middlewares\CORS;
+use App\Base\Middlewares\Firewall;
 use App\Base\Middlewares\Route;
 use App\Base\Providers\ConfigProvider;
 use App\Base\Providers\RoutesProvider;
@@ -44,7 +45,8 @@ class Server
             $this->app
                 ->add(new Benchmark($container))
                 ->add(new CORS($container))
-                ->add(new Route($container));
+                ->add(new Route($container))
+                ->add(new Firewall($container));
 
             $this->app->run();
         } catch (\Throwable $e) {

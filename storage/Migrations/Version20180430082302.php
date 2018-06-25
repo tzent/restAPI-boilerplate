@@ -17,7 +17,7 @@ class Version20180430082302 extends AbstractMigration
      */
     public function getDescription()
     {
-        return 'Create table oauth_scopes if not exists';
+        return 'Create table jwts if not exists';
     }
 
     /**
@@ -48,6 +48,6 @@ class Version20180430082302 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $this->addSql('DROP TABLE IF EXISTS oauth_jwt');
+        $this->addSql('DROP TABLE IF EXISTS jwts');
     }
 }

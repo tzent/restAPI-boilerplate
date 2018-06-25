@@ -22,7 +22,7 @@ class NotAllowedHandler implements IErrorHandler
     public function __invoke(Container $container)
     {
         return function (Request $request, Response $response, \Throwable $exception = null) use ($container) {
-            return $response->withStatus(is_null($exception) || empty($exception->getCode()) ? 401 : $exception->getCode());
+            return $response->withStatus(is_null($exception) || empty($exception->getCode()) ? 405 : $exception->getCode());
         };
     }
 }

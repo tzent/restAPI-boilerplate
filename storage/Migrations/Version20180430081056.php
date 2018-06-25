@@ -17,7 +17,7 @@ class Version20180430081056 extends AbstractMigration
      */
     public function getDescription()
     {
-        return 'Create table oauth_access_tokens if not exists';
+        return 'Create table access_tokens if not exists';
     }
 
     /**
@@ -55,6 +55,6 @@ class Version20180430081056 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $this->addSql('DROP TABLE IF EXISTS oauth_access_tokens');
+        $this->addSql('DROP TABLE IF EXISTS access_tokens');
     }
 }

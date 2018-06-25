@@ -12,7 +12,7 @@ namespace App\Base\Providers;
 
 use App\Base\Action\IAction;
 use App\Base\Helpers\Arr;
-use App\Base\Helpers\AnnotationsRoute;
+use App\Base\Route\Mapper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,7 +40,7 @@ class RoutesProvider implements ServiceProviderInterface
      */
     private function routes(Container $container)
     {
-        $creator = new AnnotationsRoute($container);
+        $mapper = new Mapper($container);
 
         foreach ($this->getModuleFiles() as $file) {
             if ($file->isFile()) {
@@ -50,7 +50,7 @@ class RoutesProvider implements ServiceProviderInterface
                 if (!empty($namespace)) {
                     $reflector = new \ReflectionClass(sprintf('%s\%s', $namespace, $file->getBasename('.php')));
                     if ($reflector->isInstantiable() && $reflector->implementsInterface(IAction::class)) {
-                        $creator->addAnnotationRoute($reflector);
+                        $mapper->add($reflector);
                     }
                 }
             }

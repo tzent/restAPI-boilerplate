@@ -7,13 +7,14 @@
  * @copyright 2018 Tzvetelin Tzvetkov
  */
 
-namespace App\Base\Helpers;
+namespace App\Base\Route;
 
 
+use App\Base\Helpers\Arr;
 use Slim\Container;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AnnotationsRoute
+class Mapper
 {
     /**
      * @var Container
@@ -35,7 +36,7 @@ class AnnotationsRoute
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \ReflectionException
      */
-    public function addAnnotationRoute(\ReflectionClass $reflector)
+    public function add(\ReflectionClass $reflector)
     {
         $parts = $this->read($reflector);
         $route = $this->container->get('router')->map($parts['methods'], $parts['path'], $reflector->getName());
@@ -63,15 +64,11 @@ class AnnotationsRoute
     {
         /** @var @var $reader \Doctrine\Common\Annotations\Reader */
         $reader            = $this->container->get('em')->getConfiguration()->getMetadataDriverImpl()->getReader();
-        $class_annotations = $reader->getClassAnnotations($reflector);
-        empty($class_annotations) && $class_annotations = [new Route([])];
 
-        $method_annotations = $reader->getMethodAnnotations(
-            new \ReflectionMethod($reflector->getName(), '__invoke')
+        return $this->merge(
+            $this->getRoute($reader->getClassAnnotations($reflector)),
+            $this->getRoute($reader->getMethodAnnotations(new \ReflectionMethod($reflector->getName(), '__invoke')))
         );
-        empty($method_annotations) && $method_annotations = [new Route([])];
-
-        return $this->merge(reset($class_annotations), reset($method_annotations));
     }
 
     /**
@@ -113,7 +110,7 @@ class AnnotationsRoute
         }
 
         return [
-            'path'         => $path,
+            'path'         => rtrim($path, '/'),
             'name'         => Arr::get($method, 'name', Arr::get($group, 'name')),
             'requirements' => $requirements,
             'options'      => $options,
@@ -142,5 +139,20 @@ class AnnotationsRoute
             'schemes'      => $route->getSchemes(),
             'condition'    => $route->getCondition()
         ];
+    }
+
+    /**
+     * @param array $annotations
+     * @return Route
+     */
+    private function getRoute(array $annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Route) {
+                return $annotation;
+            }
+        }
+
+        return new Route([]);
     }
 }

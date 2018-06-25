@@ -9,8 +9,8 @@
 
 namespace App\Base\Middlewares;
 
-use App\Base\Helpers\AnnotationsRoute;
 use App\Base\Helpers\Arr;
+use App\Base\Route\Mapper;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -32,7 +32,7 @@ class Route extends Middleware
         $route = $request->getAttribute('route');
         if (!is_null($route)) {
             $uri         = $request->getUri();
-            $annotations = (new AnnotationsRoute($this->container))->read(new \ReflectionClass($route->getCallable()));
+            $annotations = (new Mapper($this->container))->read(new \ReflectionClass($route->getCallable()));
 
             //check schemes
             $schemes = Arr::get($annotations, 'schemes', []);

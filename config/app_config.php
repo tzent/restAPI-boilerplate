@@ -48,14 +48,15 @@ return [
             'password' => '',
             'prefix'   => ''
         ],
-        'oauth2'                            => [
+        'oauth'                            => [
+            'token_type'                     => 'Bearer',
             'auth_code_lifetime'             => 30,
             'access_lifetime'                => 3600,
             'refresh_token_lifetime'         => 7200,
             'always_issue_new_refresh_token' => true
         ],
         'translation'                       => [
-            'default' => 'en',
+            'default'        => 'en',
             'resources_path' => sprintf('%s%s', ROOT_PATH, implode(DIRECTORY_SEPARATOR, ['storage', 'translations']))
         ]
     ]

@@ -34,7 +34,7 @@ class Oauth2Server implements IFactory
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em       = $container->get('em');
-        $settings = Arr::get($container->get('settings'), 'auth', []);
+        $settings = Arr::get($container->get('settings'), 'oauth', []);
 
         $client_storage             = $em->getRepository(OauthClients::class);
         $user_storage               = $em->getRepository(Users::class);
@@ -67,6 +67,7 @@ class Oauth2Server implements IFactory
             new AuthorizationCode($authorization_code_storage)
         ], [
             new AccessTokenResponse($access_token_storage, $refresh_token_storage, [
+                'token_type'             => Arr::get($settings, 'token_type'),
                 'access_lifetime'        => $access_lifetime,
                 'refresh_token_lifetime' => $refresh_token_lifetime,
             ]),
@@ -77,7 +78,7 @@ class Oauth2Server implements IFactory
 
         $storage = [];
         foreach ($em->getRepository(Jwts::class)->findAll() as $jwt) {
-            $client = $jwt->getClient();
+            $client                    = $jwt->getClient();
             $storage[$client->getId()] = [
                 'subject' => $jwt->getSubject(),
                 'key'     => $jwt->getPublicKey()
